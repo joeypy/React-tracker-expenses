@@ -1,11 +1,25 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { GlobalContext } from "../context/GlobalState";
 
 const AddTransaction = () => {
   const [text, setText] = useState(undefined);
   const [amount, setAmount] = useState(undefined);
 
-  const handleSubmit = (e) => {
-    // e.preventDefault();
+  const { addTransaction } = useContext(GlobalContext);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (text === "" || text === undefined) return;
+    if (isNaN(amount) || amount === 0) return;
+
+    const newTransaction = {
+      id: Math.floor(Math.random() * 100000000),
+      text,
+      amount: +amount,
+    };
+    console.log("newTransaction", newTransaction);
+
+    addTransaction(newTransaction);
   };
 
   return (
@@ -34,7 +48,7 @@ const AddTransaction = () => {
             required
           />
         </div>
-        <button className="btn" onClick={handleSubmit}>
+        <button className="btn" onClick={onSubmit}>
           {" "}
           Add transaction
         </button>
